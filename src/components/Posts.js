@@ -14,7 +14,7 @@ export function Posts() {
 
   return (
     <div>
-      <PostForm />
+      <PostForm posts={posts} setPosts={setPosts} />
       {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
