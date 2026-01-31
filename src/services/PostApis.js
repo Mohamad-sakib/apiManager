@@ -1,17 +1,9 @@
-const { get, remove, put } = require("./apiManager");
+import { get, remove, put, post } from "./apiManager";
 
-const getPosts = () => {
-  return get("/posts");
-};
+export const getPosts = async () => await get("/posts");
 
-const removePost = (id) => {
-  return remove(`/posts${id}`);
-};
+export const removePost = async (id) => await remove(`/posts${id}`);
 
-const addPost = (post) => {
-  return remove("/posts", post);
-};
+export const addPost = async (postData) => await post("/posts", postData);
 
-const editPost = (id, post) => {
-  return put(`/posts/${id}`, post);
-};
+export const editPost = async (id, post) => await put(`/posts/${id}`, post);

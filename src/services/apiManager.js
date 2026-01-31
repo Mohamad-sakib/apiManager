@@ -1,4 +1,4 @@
-const { default: axios } = require("axios");
+import axios from "axios";
 
 const apiManager = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com",
@@ -13,21 +13,19 @@ apiManager.interceptors.response.use(
   (error) => Promise.reject(error),
 );
 
-const get = async (endpoint, params) => {
+export const get = async (endpoint, params) => {
   return await apiManager.get(endpoint, { params });
 };
 
-const post = async (endpoint, body, params) => {
+export const post = async (endpoint, body, params) => {
   return await apiManager.post(endpoint, body, { params });
 };
 
-const put = async (endpoint, body, params) => {
+export const put = async (endpoint, body, params) => {
   const data = await apiManager.put(endpoint, body, { params });
   return data;
 };
 
-const remove = async (endpoint, params) => {
+export const remove = async (endpoint, params) => {
   return await apiManager.delete(endpoint, { params });
 };
-
-module.exports = { get, post, put, remove };
