@@ -5,6 +5,7 @@ import { PostForm } from "./PostForm";
 
 export function Posts() {
   const [posts, setPosts] = useState([]);
+  const [editPost, setEditPost] = useState(null);
 
   useEffect(() => {
     getPosts()
@@ -22,9 +23,19 @@ export function Posts() {
 
   return (
     <div>
-      <PostForm posts={posts} setPosts={setPosts} />
+      <PostForm
+        posts={posts}
+        setPosts={setPosts}
+        editPost={editPost}
+        setEditPost={setEditPost}
+      />
       {posts.map((post) => (
-        <Post key={post.id} post={post} handleDelete={handleDelete} />
+        <Post
+          key={post.id}
+          post={post}
+          handleDelete={handleDelete}
+          setEditPost={setEditPost}
+        />
       ))}
     </div>
   );

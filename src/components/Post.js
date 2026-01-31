@@ -1,4 +1,4 @@
-export function Post({ post, handleDelete }) {
+export function Post({ post, handleDelete, setEditPost }) {
   const { id, title, body } = post;
 
   return (
@@ -6,6 +6,7 @@ export function Post({ post, handleDelete }) {
       <h1 className="title">{title}</h1>
       <div className="body">{body}</div>
       <button onClick={() => handleDelete(id)}>delete</button>
+      <button onClick={() => setEditPost(post)}>Edit</button>
     </div>
   );
 }

@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { addPost } from "../services/PostApis";
+import { useEffect, useState } from "react";
+import { addPost, editPost as requestEditPost } from "../services/PostApis";
+import { UNIVERSAL_ID } from "../constants/postConstants";
 
-export function PostForm({ posts, setPosts }) {
+export function PostForm({ posts, setPosts, editPost, setEditPost }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
@@ -12,14 +13,38 @@ export function PostForm({ posts, setPosts }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const post = { title, body };
-    addPost(post)
-      .then((res) => {
-        setPosts([...posts, res]);
-        clearForm();
-      })
-      .catch((error) => console.error(error));
+    const newpost = {
+      userId: 1,
+      title,
+      body,
+      id: editPost ? editPost.id : Date.now(),
+    };
+
+    if (editPost) {
+      requestEditPost(UNIVERSAL_ID, newpost).then(() => {
+        setPosts((posts) => {
+          return posts.map((post) => (post.id === newpost.id ? newpost : post));
+        });
+        setEditPost(null);
+      });
+    } else {
+      addPost(newpost)
+        .then(() => {
+          setPosts([...posts, newpost]);
+          clearForm();
+        })
+        .catch((error) => console.error(error));
+    }
   };
+
+  useEffect(() => {
+    if (editPost) {
+      setTitle(editPost.title);
+      setBody(editPost.body);
+    } else {
+      clearForm();
+    }
+  }, [editPost]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -39,7 +64,7 @@ export function PostForm({ posts, setPosts }) {
           onChange={(e) => setBody(e.target.value)}
         ></textarea>
       </div>
-      <button type="submit">Add Post</button>
+      <button type="submit">{editPost ? "EditPost" : "Add Post"}</button>
     </form>
   );
 }
